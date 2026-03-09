@@ -126,6 +126,20 @@
           <p>Já tem conta? <a href="#" onclick="switchTo('login')">Entrar →</a></p>
         </div>
 
+        <!-- PERFIL SELECTOR -->
+        <div class="profile-selector">
+          <button class="profile-btn active" id="btnCliente" onclick="selectProfile('cliente')">
+            <span class="profile-icon">👤</span>
+            <span class="profile-name">Cliente</span>
+            <span class="profile-desc">Quero comprar ingressos e participar de eventos</span>
+          </button>
+          <button class="profile-btn" id="btnOrganizador" onclick="selectProfile('organizador')">
+            <span class="profile-icon">🏢</span>
+            <span class="profile-name">Organizador</span>
+            <span class="profile-desc">Quero criar e gerenciar meus próprios eventos</span>
+          </button>
+        </div>
+
         <div class="field-group">
           <div class="field-row">
             <div class="field">
@@ -149,6 +163,43 @@
             <div class="input-wrap">
               <span class="input-icon">✉</span>
               <input type="email" id="regEmail" placeholder="seu@email.com"/>
+            </div>
+          </div>
+
+          <!-- CAMPOS EXTRAS ORGANIZADOR -->
+          <div id="orgFields" style="display:none; flex-direction:column; gap:18px;">
+            <div class="field">
+              <label>Nome da empresa / organização</label>
+              <div class="input-wrap">
+                <span class="input-icon">🏢</span>
+                <input type="text" id="regOrgName" placeholder="Ex: Som & Cia Produções"/>
+              </div>
+            </div>
+            <div class="field">
+              <label>CNPJ</label>
+              <div class="input-wrap">
+                <span class="input-icon">📄</span>
+                <input type="text" id="regCnpj" placeholder="00.000.000/0001-00" maxlength="18" oninput="maskCnpj(this)"/>
+              </div>
+            </div>
+            <div class="field">
+              <label>Tipo de eventos que organiza</label>
+              <div class="input-wrap select-wrap-login">
+                <select id="regEventType">
+                  <option value="">Selecione...</option>
+                  <option>🎵 Música e Shows</option>
+                  <option>💻 Tecnologia e Negócios</option>
+                  <option>🎨 Arte e Cultura</option>
+                  <option>🍽️ Gastronomia</option>
+                  <option>⚽ Esporte</option>
+                  <option>📚 Educação</option>
+                  <option>✨ Outros</option>
+                </select>
+              </div>
+            </div>
+            <div class="org-notice">
+              <span>⚠️</span>
+              <p>Contas de organizador passam por <strong>aprovação manual</strong> em até 48h antes de poder criar eventos.</p>
             </div>
           </div>
 
@@ -181,10 +232,14 @@
           </label>
         </div>
 
-        <button class="btn-submit" onclick="handleRegister()">Criar Conta</button>
+        <button class="btn-submit" id="registerBtn" onclick="handleRegister()">Criar Conta</button>
 
         <div class="form-success" id="registerSuccess" style="display:none">
-          <span>🎉</span> Conta criada! Bem-vindo ao EVENTURA!
+          <span id="regSuccessIcon">🎉</span>
+          <div>
+            <strong id="regSuccessTitle">Conta criada! Bem-vindo ao EVENTURA!</strong>
+            <span id="regSuccessMsg"></span>
+          </div>
         </div>
       </div>
 

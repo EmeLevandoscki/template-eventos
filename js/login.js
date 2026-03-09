@@ -94,6 +94,34 @@ function drawParticles() {
 drawParticles();
 
 // --------------------------------
+// PROFILE SELECTION
+// --------------------------------
+
+let selectedProfile = 'cliente';
+
+function selectProfile(profile) {
+  selectedProfile = profile;
+
+  document.getElementById('btnCliente').classList.toggle('active', profile === 'cliente');
+  document.getElementById('btnOrganizador').classList.toggle('active', profile === 'organizador');
+
+  const orgFields = document.getElementById('orgFields');
+  orgFields.style.display = profile === 'organizador' ? 'flex' : 'none';
+
+  const btn = document.getElementById('registerBtn');
+  btn.textContent = profile === 'organizador' ? 'Solicitar Cadastro como Organizador' : 'Criar Conta';
+}
+
+function maskCnpj(el) {
+  let v = el.value.replace(/\D/g, '').slice(0, 14);
+  if (v.length > 12) v = v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5,8)+'/'+v.slice(8,12)+'-'+v.slice(12);
+  else if (v.length > 8) v = v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5,8)+'/'+v.slice(8);
+  else if (v.length > 5) v = v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5);
+  else if (v.length > 2) v = v.slice(0,2)+'.'+v.slice(2);
+  el.value = v;
+}
+
+// --------------------------------
 // PANEL SWITCHING
 // --------------------------------
 
@@ -256,17 +284,42 @@ function handleRegister() {
   if (pass !== passConfirm) { showError('regPass', 'As senhas não coincidem.'); valid = false; }
   if (!terms) { alert('Aceite os termos para continuar.'); valid = false; }
 
+  // Validação extra para organizador
+  if (selectedProfile === 'organizador') {
+    const orgName = document.getElementById('regOrgName').value.trim();
+    const cnpj    = document.getElementById('regCnpj').value.trim();
+    if (!orgName) { alert('Informe o nome da empresa ou organização.'); valid = false; }
+    if (!cnpj)    { alert('Informe o CNPJ.'); valid = false; }
+  }
+
   if (!valid) return;
 
-  const btn = document.querySelector('#registerBox .btn-submit');
+  const btn = document.getElementById('registerBtn');
+  const originalText = btn.textContent;
   btn.textContent = '⏳ Criando conta...';
   btn.disabled    = true;
 
   setTimeout(() => {
-    btn.textContent = 'Criar Conta';
+    btn.textContent = originalText;
     btn.disabled    = false;
-    document.getElementById('registerSuccess').style.display = 'flex';
-    setTimeout(() => switchTo('login'), 2500);
+
+    const successBox   = document.getElementById('registerSuccess');
+    const successIcon  = document.getElementById('regSuccessIcon');
+    const successTitle = document.getElementById('regSuccessTitle');
+    const successMsg   = document.getElementById('regSuccessMsg');
+
+    if (selectedProfile === 'organizador') {
+      successIcon.textContent  = '⏳';
+      successTitle.textContent = 'Solicitação enviada!';
+      successMsg.textContent   = 'Nossa equipe analisará seu cadastro em até 48h e enviará a confirmação por e-mail.';
+    } else {
+      successIcon.textContent  = '🎉';
+      successTitle.textContent = 'Conta criada! Bem-vindo ao EVENTURA!';
+      successMsg.textContent   = 'Você já pode explorar e comprar ingressos.';
+    }
+
+    successBox.style.display = 'flex';
+    setTimeout(() => switchTo('login'), 3000);
   }, 1600);
 }
 

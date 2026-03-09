@@ -27,7 +27,7 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  overflow: hidden;
+  overflow-y: auto;
   cursor: none;
 }
 
@@ -90,6 +90,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 100vh;
+  align-items: start;
 }
 
 /* ================================
@@ -102,7 +103,9 @@ body {
   justify-content: space-between;
   padding: 40px 56px;
   border-right: 1px solid var(--border);
-  position: relative;
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
   overflow: hidden;
 }
 
@@ -166,7 +169,8 @@ h1 .accent { color: var(--accent); }
 .left-stats {
   display: flex; align-items: center; gap: 28px;
 }
- 
+
+.ls-item {}
 
 .ls-num {
   font-family: 'Bebas Neue', sans-serif;
@@ -200,10 +204,10 @@ h1 .accent { color: var(--accent); }
 
 .right-panel {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 40px 56px;
-  overflow-y: auto;
+  padding: 60px 56px;
+  overflow-y: visible;
 }
 
 /* ================================
@@ -499,4 +503,125 @@ h1 .accent { color: var(--accent); }
   .right-panel { padding: 40px 28px; }
 
   .form-box { max-width: 100%; }
+}
+
+/* ================================
+   PROFILE SELECTOR
+   ================================ */
+
+.profile-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.profile-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  cursor: none;
+  transition: all 0.25s;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.25s;
+}
+
+.profile-btn:hover {
+  border-color: rgba(255,255,255,0.15);
+  background: #1a1a26;
+}
+
+.profile-btn.active {
+  border-color: var(--accent);
+  background: rgba(255,61,90,0.06);
+}
+
+.profile-btn.active::after {
+  transform: scaleX(1);
+}
+
+.profile-icon {
+  font-size: 1.4rem;
+  margin-bottom: 2px;
+  display: block;
+}
+
+.profile-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  display: block;
+}
+
+.profile-desc {
+  font-size: 0.72rem;
+  color: var(--muted);
+  line-height: 1.4;
+  display: block;
+}
+
+.profile-btn.active .profile-desc {
+  color: rgba(255,61,90,0.7);
+}
+
+/* ORG NOTICE */
+.org-notice {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  background: rgba(255,184,0,0.06);
+  border: 1px solid rgba(255,184,0,0.2);
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.org-notice span { font-size: 1rem; flex-shrink: 0; }
+.org-notice strong { color: var(--accent2); }
+
+/* SELECT inside login */
+.select-wrap-login {
+  position: relative;
+}
+
+.select-wrap-login select {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  padding: 13px 16px;
+  outline: none;
+  appearance: none;
+  cursor: none;
+  transition: border-color 0.25s;
+}
+
+.select-wrap-login select:focus { border-color: var(--border-focus); }
+.select-wrap-login select option { background: var(--surface); }
+
+.select-wrap-login::after {
+  content: '▾';
+  position: absolute; right: 14px; top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--muted); font-size: 0.85rem;
 }
